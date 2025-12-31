@@ -77,7 +77,84 @@
   >https://newsocietyukku.github.io/lang/</a>
 
 
+
 <br>
 
 
 <br>
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Author</title>
+    <style>
+        body { font-family: Arial; padding: 20px; text-align: center; }
+        input { display: block; width: 80%; margin: 10px auto; padding: 10px; }
+        button { background: #007BFF; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>Send your contact to Author</h2>
+    <form id="myContactForm">
+        <input type="text" id="userName" placeholder="Your Name" required>
+        <input type="text" id="userContact" placeholder="Email or Phone" required>
+        <button type="submit" id="submitBtn">Send Information</button>
+    </form>
+
+    <script>
+        // REPLACE THESE WITH YOUR ACTUAL KEYS
+        const PERSONAL_ACCESS_TOKEN = 'YOUR_TOKEN_HERE';
+        const BASE_ID = 'YOUR_BASE_ID_HERE';
+        const TABLE_NAME = 'Table 1'; // Or whatever your table is named
+
+        document.getElementById('myContactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const contact = document.getElementById('userContact').value;
+            const btn = document.getElementById('submitBtn');
+
+            btn.innerText = "Sending...";
+
+            fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${PERSONAL_ACCESS_TOKEN}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "fields": {
+                        "Name": name,
+                        "Contact Info": contact
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Success! Info sent privately.");
+                btn.innerText = "Send Information";
+                document.getElementById('myContactForm').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Something went wrong.");
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+Would the above be correct
